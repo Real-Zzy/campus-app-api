@@ -1,9 +1,7 @@
 package cn.kmbeast.mapper;
 
 import cn.kmbeast.pojo.dto.query.extend.CategoryQueryDto;
-import cn.kmbeast.pojo.dto.query.extend.UserQueryDto;
 import cn.kmbeast.pojo.entity.Category;
-import cn.kmbeast.pojo.entity.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

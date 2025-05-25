@@ -33,7 +33,7 @@
     <select id="query" resultMap="BaseResultMap">
 
         SELECT c.*
-        FROM user category c
+        FROM category c
         <where>
             <if test="name != null and name != ''">
                 AND c.name LIKE concat('%',#{name},'%')
@@ -42,7 +42,7 @@
                 AND c.is_use = #{isUse}
             </if>
         </where>
-        ORDER BY c.id DESC
+        ORDER BY c.id ASC
         <if test="current != null and size != null">
             LIMIT #{current},#{size}
         </if>

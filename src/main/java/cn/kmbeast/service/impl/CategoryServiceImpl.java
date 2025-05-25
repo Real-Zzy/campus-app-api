@@ -29,8 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public Result<String> save(Category category) {
-        if (StringUtils.hasText(category.getName())) {
+        if (!StringUtils.hasText(category.getName())) {
             return ApiResult.error("category name can't be null");
+        }
+        if (category.getIsUse() == null) {
+            category.setIsUse(false);
         }
         categoryMapper.save(category);
         return ApiResult.success("category successfully added");
