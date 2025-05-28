@@ -37,6 +37,12 @@ public class ProductServiceImpl implements ProductService {
         if (product.getBargain() == null) {
             product.setBargain(false);
         }
+        if (product.getOldLevel() == null) {
+            product.setOldLevel(9);
+        }
+        if (product.getInventory() == null) {
+            product.setInventory(1);
+        }
         product.setCreateTime(LocalDateTime.now());
         product.setUserId(LocalThreadHolder.getUserId());
         productMapper.save(product);
