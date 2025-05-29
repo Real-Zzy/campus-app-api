@@ -2,6 +2,7 @@ package cn.kmbeast.controller;
 
 import cn.kmbeast.aop.Pager;
 import cn.kmbeast.aop.Protector;
+import cn.kmbeast.context.LocalThreadHolder;
 import cn.kmbeast.pojo.api.Result;
 import cn.kmbeast.pojo.dto.query.extend.CategoryQueryDto;
 import cn.kmbeast.pojo.dto.query.extend.ProductQueryDto;
@@ -69,6 +70,19 @@ public class ProductController {
     @PostMapping(value = "/query")
     @ResponseBody
     public Result<List<ProductVO>> query(@RequestBody ProductQueryDto productQueryDto) {
+        return productService.query(productQueryDto);
+    }
+
+    /**
+     * query item by user
+     *
+     * @param productQueryDto query param
+     * @return Result<List < ProductVO>> response result
+     */
+    @PostMapping(value = "/queryUser")
+    @ResponseBody
+    public Result<List<ProductVO>> queryUser(@RequestBody ProductQueryDto productQueryDto) {
+        productQueryDto.setUserId(LocalThreadHolder.getUserId());
         return productService.query(productQueryDto);
     }
 }
