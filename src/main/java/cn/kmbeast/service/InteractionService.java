@@ -17,4 +17,5 @@ public interface InteractionService {
 
     Result<List<Interaction>> query(InteractionQueryDto interactionQueryDto);
 
+    Result<Boolean> saveOperation(Integer productId);
 }
