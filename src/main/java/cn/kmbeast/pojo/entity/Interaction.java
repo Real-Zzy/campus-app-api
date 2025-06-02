@@ -24,12 +24,12 @@ public class Interaction {
     /**
      * User ID
      */
-    private Integer userID;
+    private Integer userId;
 
     /**
      * Product ID
      */
-    private Integer productID;
+    private Integer productId;
 
     /**
      * Interaction type
