@@ -120,6 +120,16 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!-- plugin version will match your spring-boot-starter-parent version -->
+                <configuration>
+                    <mainClass>cn.kmbeast.CampusProductApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <repositories>
