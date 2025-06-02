@@ -2,17 +2,25 @@ package cn.kmbeast.service.impl;
 
 import cn.kmbeast.context.LocalThreadHolder;
 import cn.kmbeast.mapper.InteractionMapper;
+import cn.kmbeast.mapper.MessageMapper;
+import cn.kmbeast.mapper.ProductMapper;
+import cn.kmbeast.mapper.UserMapper;
 import cn.kmbeast.pojo.api.ApiResult;
 import cn.kmbeast.pojo.api.Result;
 import cn.kmbeast.pojo.dto.query.extend.InteractionQueryDto;
+import cn.kmbeast.pojo.dto.query.extend.ProductQueryDto;
 import cn.kmbeast.pojo.em.InteractionEnum;
 import cn.kmbeast.pojo.entity.Interaction;
+import cn.kmbeast.pojo.entity.Message;
+import cn.kmbeast.pojo.entity.User;
+import cn.kmbeast.pojo.vo.ProductVO;
 import cn.kmbeast.service.InteractionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +31,56 @@ public class InteractionServiceImpl implements InteractionService {
 
     @Resource
     private InteractionMapper interactionMapper;
+    @Resource
+    private ProductMapper productMapper;
+    @Resource
+    private MessageMapper messageMapper;
+    @Resource
+    private UserMapper userMapper;
+
+    /**
+     * "我想要"操作
+     *
+     * @param productId 商品ID
+     * @return Result<String> 后台通用返回封装类
+     */
+    @Override
+    public Result<String> likeProduct(Integer productId) {
+        // 用户不能重复去"想要"商品
+        InteractionQueryDto interactionQueryDto
+                = createInteractionQueryDto(productId, InteractionEnum.LOVE.getType());
+        int count = interactionMapper.queryCount(interactionQueryDto);
+        if (count != 0) {
+            return ApiResult.error("Do Not Repeat Operations");
+        }
+        ProductQueryDto productQueryDto = new ProductQueryDto();
+        productQueryDto.setId(productId);
+        List<ProductVO> productVOS = productMapper.query(productQueryDto);
+        // 如果商品信息不存在，直接返回
+        if (productVOS.isEmpty()) {
+            return ApiResult.error("Item Query Error");
+        }
+        ProductVO productVO = productVOS.get(0);
+        // 用户自己感兴趣自己的商品，明显不合理，所以如果商品是自己的商品，不做处理了
+        if (Objects.equals(productVO.getUserId(),LocalThreadHolder.getUserId())){
+            return ApiResult.error("Do Not Add Your Item To Wishlist");
+        }
+        // 取得发布者用户ID
+        Integer publisherId = productVO.getUserId();
+        Integer userId = LocalThreadHolder.getUserId();
+        User user = new User();
+        user.setId(userId);
+        User operator = userMapper.getByActive(user);
+        // 查询用户信息
+        Message message = new Message();
+        message.setUserId(publisherId);
+        // 消息设置为未读
+        message.setIsRead(false);
+        message.setCreateTime(LocalDateTime.now());
+        message.setContent("user【" + operator.getUserName() + "】is interested in your【" + productVO.getName() + "】");
+        messageMapper.save(message);
+        return ApiResult.success("The seller has felt your interest, place order now!");
+    }
 
     /**
      * create new
@@ -33,7 +91,7 @@ public class InteractionServiceImpl implements InteractionService {
     @Override
     public Result<String> save(Interaction interaction) {
         interactionMapper.save(interaction);
-        return ApiResult.success("Interaction Creation Success");
+        return ApiResult.success("Interaction Created");
     }
 
     /**

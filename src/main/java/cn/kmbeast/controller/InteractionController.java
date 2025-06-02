@@ -21,7 +21,19 @@ public class InteractionController {
     private InteractionService interactionService;
 
     /**
-     * 收藏操作 （取消收藏与收藏是一组对立的操作）
+     * wishlist
+     *
+     * @param productId 商品ID
+     * @return Result<Boolean> 后台通用返回封装类
+     */
+    @PostMapping(value = "/likeProduct/{productId}")
+    @ResponseBody
+    public Result<String> likeProduct(@PathVariable Integer productId) {
+        return interactionService.likeProduct(productId);
+    }
+
+    /**
+     * add to/remove from favorite
      *
      * @param productId 商品ID
      * @return Result<Boolean> 后台通用返回封装类
