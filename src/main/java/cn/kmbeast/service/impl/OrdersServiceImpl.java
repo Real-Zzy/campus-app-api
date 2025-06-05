@@ -2,6 +2,7 @@ package cn.kmbeast.service.impl;
 
 import cn.kmbeast.context.LocalThreadHolder;
 import cn.kmbeast.mapper.OrdersMapper;
+import cn.kmbeast.mapper.ProductMapper;
 import cn.kmbeast.pojo.api.ApiResult;
 import cn.kmbeast.pojo.api.Result;
 import cn.kmbeast.pojo.dto.query.extend.OrdersQueryDto;
@@ -22,6 +23,8 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Resource
     private OrdersMapper ordersMapper;
+    @Resource
+    private ProductMapper productMapper;
 
     /**
      * 新增
@@ -73,5 +76,36 @@ public class OrdersServiceImpl implements OrdersService {
         int totalCount = ordersMapper.queryCount(ordersQueryDto);
         List<OrdersVO> ordersVOList = ordersMapper.query(ordersQueryDto);
         return ApiResult.success(ordersVOList, totalCount);
+    }
+
+    /**
+     * 查询用户发布的商品产生的订单数据
+     *
+     * @param ordersQueryDto 查询参数
+     * @return Result<List < OrdersVO>> 响应结果
+     */
+    @Override
+    public Result<List<OrdersVO>> queryOrdersList(OrdersQueryDto ordersQueryDto) {
+        List<Integer> productIds = productMapper.queryProductIds(LocalThreadHolder.getUserId());
+        ordersQueryDto.setProductIds(productIds);
+        List<OrdersVO> ordersVOList = ordersMapper.queryByProductIds(ordersQueryDto);
+        return ApiResult.success(ordersVOList);
+    }
+
+    /**
+     * 订单确定退款
+     *
+     * @param ordersId 订单ID
+     * @return Result<String> 响应结果
+     */
+    @Override
+    public Result<String> returnMoney(Integer ordersId) {
+        Orders orders = new Orders();
+        orders.setId(ordersId);
+        orders.setRefundStatus(true);
+        orders.setIsRefundConfirm(true);
+        orders.setRefundTime(LocalDateTime.now());
+        ordersMapper.update(orders);
+        return ApiResult.success("退款成功");
     }
 }

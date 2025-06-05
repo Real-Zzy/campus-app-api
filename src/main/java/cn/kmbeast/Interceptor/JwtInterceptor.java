@@ -18,6 +18,7 @@ import java.io.Writer;
  * 随后的接口请求，都会在协议头带上token
  * 所有请求执行之前，都会被该拦截器拦截：token校验通过则正常放行请求，否则直接返回
  *
+ * @author 【B站：程序员辰星】
  */
 public class JwtInterceptor implements HandlerInterceptor {
 
@@ -42,7 +43,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (requestURI.contains("/login") ||
                 requestURI.contains("/error") ||
                 requestURI.contains("/file") ||
-                requestURI.contains("/query") && !requestURI.contains("/queryUser") ||
+                requestURI.contains("/query") && !requestURI.contains("/queryUser")
+                        && !requestURI.contains("/queryOrdersList") ||
                 requestURI.contains("/register")) {
             return true;
         }

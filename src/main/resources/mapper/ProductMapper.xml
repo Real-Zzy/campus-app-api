@@ -111,6 +111,12 @@
 
     </select>
 
+    <select id="queryProductIds" resultType="java.lang.Integer">
+        SELECT p.id
+        FROM product p
+        WHERE p.user_id = #{userId}
+    </select>
+
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.kmbeast.pojo.vo.ProductVO">
         <id column="id" property="id"/>

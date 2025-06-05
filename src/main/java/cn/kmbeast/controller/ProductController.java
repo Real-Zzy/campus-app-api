@@ -88,6 +88,30 @@ public class ProductController {
     }
 
     /**
+     * 商品下单
+     *
+     * @param ordersId 订单ID
+     * @return Result<String> 响应结果
+     */
+    @PostMapping(value = "/placeAnOrder/{ordersId}")
+    @ResponseBody
+    public Result<String> placeAnOrder(@PathVariable Integer ordersId) {
+        return productService.placeAnOrder(ordersId);
+    }
+
+    /**
+     * 申请退款
+     *
+     * @param ordersId 订单ID
+     * @return Result<String> 响应结果
+     */
+    @PostMapping(value = "/refund/{ordersId}")
+    @ResponseBody
+    public Result<String> refund(@PathVariable Integer ordersId) {
+        return productService.refund(ordersId);
+    }
+
+    /**
      * query item by user
      *
      * @param productQueryDto query param

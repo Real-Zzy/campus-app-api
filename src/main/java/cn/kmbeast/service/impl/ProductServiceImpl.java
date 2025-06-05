@@ -153,4 +153,34 @@ public class ProductServiceImpl implements ProductService {
         long timeMillis = System.currentTimeMillis();
         return String.valueOf(timeMillis);
     }
+
+    /**
+     * 商品下单
+     * @param ordersId 订单ID
+     * @return Result<String> 通用返回封装类
+     */
+    @Override
+    public Result<String> placeAnOrder(Integer ordersId) {
+        Orders orders = new Orders();
+        orders.setId(ordersId);
+        orders.setTradeStatus(true);
+        orders.setTradeTime(LocalDateTime.now());
+        ordersMapper.update(orders);
+        return ApiResult.success("下单成功");
+    }
+
+    /**
+     * 申请退款
+     *
+     * @param ordersId 订单ID
+     * @return Result<String> 响应结果
+     */
+    @Override
+    public Result<String> refund(Integer ordersId) {
+        Orders orders = new Orders();
+        orders.setId(ordersId);
+        orders.setRefundStatus(true);
+        ordersMapper.update(orders);
+        return ApiResult.success("申请退款成功，请等待卖家审核");
+    }
 }

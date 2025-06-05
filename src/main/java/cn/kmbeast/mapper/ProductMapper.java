@@ -1,7 +1,9 @@
 package cn.kmbeast.mapper;
 
+import cn.kmbeast.pojo.dto.query.extend.OrdersQueryDto;
 import cn.kmbeast.pojo.dto.query.extend.ProductQueryDto;
 import cn.kmbeast.pojo.entity.Product;
+import cn.kmbeast.pojo.vo.OrdersVO;
 import cn.kmbeast.pojo.vo.ProductVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -52,5 +54,6 @@ public interface ProductMapper {
      */
     void batchDelete(@Param(value = "ids") List<Integer> ids);
 
+    List<Integer> queryProductIds(@Param(value = "userId") Integer userId);
 
 }

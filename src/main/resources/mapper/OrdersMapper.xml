@@ -112,6 +112,34 @@
 
     </select>
 
+    <select id="queryByProductIds" resultMap="BaseResultMap">
+        SELECT o.*,
+        u.user_name,
+        u.user_avatar,
+        p.name AS product_title,
+        p.cover_list AS product_cover
+        FROM orders o
+        LEFT JOIN user u ON u.id = o.user_id
+        LEFT JOIN product p ON p.id = o.product_id
+
+        <where>
+            <if test="productIds != null and productIds.size() > 0">
+                o.product_id IN
+                <foreach collection="productIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="tradeStatus != null">
+                AND o.trade_status = #{tradeStatus}
+            </if>
+            <if test="code != null and code != ''">
+                AND o.code LIKE concat('%',#{code},'%')
+            </if>
+        </where>
+
+        ORDER BY o.id DESC
+    </select>
+
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="cn.kmbeast.pojo.vo.OrdersVO">
         <id column="id" property="id"/>

@@ -51,4 +51,6 @@ public interface OrdersMapper {
      */
     void batchDelete(@Param(value = "ids") List<Integer> ids);
 
+    List<OrdersVO> queryByProductIds(OrdersQueryDto ordersQueryDto);
+
 }

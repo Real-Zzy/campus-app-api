@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Order Query Dto
@@ -36,4 +37,8 @@ public class OrdersQueryDto extends QueryDto {
      * Refund Status
      */
     private Boolean refundStatus;
+    /**
+     * 商品ID列表
+     */
+    private List<Integer> productIds;
 }

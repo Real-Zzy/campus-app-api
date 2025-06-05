@@ -22,4 +22,7 @@ public interface OrdersService {
 
     Result<List<OrdersVO>> query(OrdersQueryDto ordersQueryDto);
 
+    Result<List<OrdersVO>> queryOrdersList(OrdersQueryDto ordersQueryDto);
+
+    Result<String> returnMoney(Integer ordersId);
 }

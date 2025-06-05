@@ -24,4 +24,8 @@ public interface ProductService {
     Result<List<ProductVO>> query(ProductQueryDto productQueryDto);
 
     Result<String> buyProduct(OrdersDTO ordersDTO);
+
+    Result<String> placeAnOrder(Integer ordersId);
+
+    Result<String> refund(Integer ordersId);
 }
