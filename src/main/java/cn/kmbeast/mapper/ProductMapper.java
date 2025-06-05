@@ -56,4 +56,6 @@ public interface ProductMapper {
 
     List<Integer> queryProductIds(@Param(value = "userId") Integer userId);
 
+    List<ProductVO> queryProductList(@Param(value = "ids") List<Integer> ids);
+
 }

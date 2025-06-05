@@ -4,6 +4,7 @@ import cn.kmbeast.aop.Pager;
 import cn.kmbeast.pojo.api.Result;
 import cn.kmbeast.pojo.dto.query.extend.InteractionQueryDto;
 import cn.kmbeast.pojo.entity.Interaction;
+import cn.kmbeast.pojo.vo.ProductVO;
 import cn.kmbeast.service.InteractionService;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,5 +65,16 @@ public class InteractionController {
     @ResponseBody
     public Result<List<Interaction>> query(@RequestBody InteractionQueryDto interactionQueryDto) {
         return interactionService.query(interactionQueryDto);
+    }
+
+    /**
+     * 查询用户自己收藏的商品
+     *
+     * @return Result<List < Interaction>> 响应结果
+     */
+    @PostMapping(value = "/queryUser")
+    @ResponseBody
+    public Result<List<ProductVO>> queryUser() {
+        return interactionService.queryUser();
     }
 }

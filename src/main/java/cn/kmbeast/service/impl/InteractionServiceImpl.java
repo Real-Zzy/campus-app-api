@@ -172,4 +172,22 @@ public class InteractionServiceImpl implements InteractionService {
         List<Interaction> interactionList = interactionMapper.query(interactionQueryDto);
         return ApiResult.success(interactionList, totalCount);
     }
+
+    /**
+     * 查询用户自己收藏的商品
+     *
+     * @return Result<List < Interaction>> 响应结果
+     */
+    @Override
+    public Result<List<ProductVO>> queryUser() {
+        InteractionQueryDto interactionQueryDto = new InteractionQueryDto();
+        interactionQueryDto.setUserId(LocalThreadHolder.getUserId());
+        interactionQueryDto.setType(InteractionEnum.SAVE.getType());
+        List<Interaction> interactionList = interactionMapper.query(interactionQueryDto);
+        List<Integer> productIds = interactionList.stream()
+                .map(Interaction::getProductId).collect(Collectors.toList());
+        // 通过商品的ID列表，查询用户收藏的这些商品返回
+        List<ProductVO> productVOS = productMapper.queryProductList(productIds);
+        return ApiResult.success(productVOS);
+    }
 }
