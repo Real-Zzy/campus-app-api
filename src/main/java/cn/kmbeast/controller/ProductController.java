@@ -6,6 +6,7 @@ import cn.kmbeast.context.LocalThreadHolder;
 import cn.kmbeast.pojo.api.Result;
 import cn.kmbeast.pojo.dto.query.extend.CategoryQueryDto;
 import cn.kmbeast.pojo.dto.query.extend.ProductQueryDto;
+import cn.kmbeast.pojo.dto.update.OrdersDTO;
 import cn.kmbeast.pojo.entity.Category;
 import cn.kmbeast.pojo.entity.Product;
 import cn.kmbeast.pojo.vo.ProductVO;
@@ -24,6 +25,19 @@ import java.util.List;
 public class ProductController {
     @Resource
     private ProductService productService;
+
+
+    /**
+     * 商品下单
+     *
+     * @param ordersDTO 参数
+     * @return Result<String> 响应结果
+     */
+    @PostMapping(value = "/buyProduct")
+    @ResponseBody
+    public Result<String> buyProduct(@RequestBody OrdersDTO ordersDTO) {
+        return productService.buyProduct(ordersDTO);
+    }
 
     /**
      * add new item
