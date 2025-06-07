@@ -46,6 +46,15 @@ public class InteractionController {
     }
 
     /**
+     * 用户删除自己的浏览记录
+     */
+    @PostMapping(value = "/batchDeleteView")
+    @ResponseBody
+    public Result<String> batchDeleteInteraction() {
+        return interactionService.batchDeleteInteraction();
+    }
+
+    /**
      * batch delete
      */
     @PostMapping(value = "/batchDelete")
@@ -68,6 +77,18 @@ public class InteractionController {
     }
 
     /**
+     * 记录用户对于商品的浏览行为
+     *
+     * @param productId 商品ID
+     * @return Result<Void> 响应结果
+     */
+    @PostMapping(value = "/view/{productId}")
+    @ResponseBody
+    public Result<Void> view(@PathVariable Integer productId) {
+        return interactionService.view(productId);
+    }
+
+    /**
      * 查询用户自己收藏的商品
      *
      * @return Result<List < Interaction>> 响应结果
@@ -76,5 +97,16 @@ public class InteractionController {
     @ResponseBody
     public Result<List<ProductVO>> queryUser() {
         return interactionService.queryUser();
+    }
+
+    /**
+     * 查询用户自己浏览过的商品
+     *
+     * @return Result<List < ProductVO>> 响应结果
+     */
+    @PostMapping(value = "/myView")
+    @ResponseBody
+    public Result<List<ProductVO>> myView() {
+        return interactionService.myView();
     }
 }

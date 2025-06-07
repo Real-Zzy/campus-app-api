@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -189,5 +190,60 @@ public class InteractionServiceImpl implements InteractionService {
         // 通过商品的ID列表，查询用户收藏的这些商品返回
         List<ProductVO> productVOS = productMapper.queryProductList(productIds);
         return ApiResult.success(productVOS);
+    }
+
+    /**
+     * 记录用户对于商品的浏览行为
+     *
+     * @param productId 商品ID
+     * @return Result<Void> 响应结果
+     */
+    @Override
+    public Result<Void> view(Integer productId) {
+        InteractionQueryDto interactionQueryDto
+                = createInteractionQueryDto(productId, InteractionEnum.VIEW.getType());
+        List<Interaction> interactionList = interactionMapper.query(interactionQueryDto);
+        // 没浏览过才需要记录
+        if (interactionList.isEmpty()) {
+            Interaction interaction = createInteraction(productId, InteractionEnum.VIEW.getType());
+            interactionMapper.save(interaction);
+        }
+        return ApiResult.success();
+    }
+
+    /**
+     * 查询用户自己浏览过的商品
+     *
+     * @return Result<List < ProductVO>> 响应结果
+     */
+    @Override
+    public Result<List<ProductVO>> myView() {
+        InteractionQueryDto interactionQueryDto = new InteractionQueryDto();
+        interactionQueryDto.setUserId(LocalThreadHolder.getUserId());
+        interactionQueryDto.setType(InteractionEnum.VIEW.getType());
+        List<Interaction> interactionList = interactionMapper.query(interactionQueryDto);
+        List<Integer> productIds = interactionList.stream()
+                .map(Interaction::getProductId).collect(Collectors.toList());
+        if (productIds.isEmpty()) {
+            return ApiResult.success(new ArrayList<>());
+        }
+        // 通过商品的ID列表，查询用户浏览过的这些商品返回
+        List<ProductVO> productVOS = productMapper.queryProductList(productIds);
+        return ApiResult.success(productVOS);
+    }
+
+    /**
+     * 用户删除自己的浏览记录
+     */
+    @Override
+    public Result<String> batchDeleteInteraction() {
+        InteractionQueryDto interactionQueryDto = new InteractionQueryDto();
+        interactionQueryDto.setUserId(LocalThreadHolder.getUserId());
+        interactionQueryDto.setType(InteractionEnum.VIEW.getType());
+        List<Interaction> interactionList = interactionMapper.query(interactionQueryDto);
+        List<Integer> ids = interactionList.stream()
+                .map(Interaction::getId).collect(Collectors.toList());
+        interactionMapper.batchDelete(ids);
+        return ApiResult.success();
     }
 }
