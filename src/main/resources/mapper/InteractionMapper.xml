@@ -16,8 +16,13 @@
 
     <select id="query" resultMap="BaseResultMap">
 
-        SELECT i.*
+        SELECT i.*,
+        u.user_name,
+        u.user_account,
+        p.name AS product_title
         FROM interaction i
+        LEFT JOIN user u ON u.id = i.user_id
+        LEFT JOIN product p ON p.id = i.product_id
         <where>
             <if test="id != null">
                 AND i.id = #{id}
@@ -67,10 +72,13 @@
     </select>
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="cn.kmbeast.pojo.entity.Interaction">
+    <resultMap id="BaseResultMap" type="cn.kmbeast.pojo.vo.InteractionVO">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="product_id" property="productId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_account" property="userAccount"/>
+        <result column="product_title" property="productTitle"/>
         <result column="type" property="type"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
