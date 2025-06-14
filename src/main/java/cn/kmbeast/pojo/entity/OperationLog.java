@@ -35,5 +35,5 @@ public class OperationLog {
      * record time
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime time;
+    private LocalDateTime createTime;
 }

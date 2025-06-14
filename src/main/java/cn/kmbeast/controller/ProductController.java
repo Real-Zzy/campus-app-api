@@ -1,5 +1,6 @@
 package cn.kmbeast.controller;
 
+import cn.kmbeast.aop.Log;
 import cn.kmbeast.aop.Pager;
 import cn.kmbeast.aop.Protector;
 import cn.kmbeast.context.LocalThreadHolder;
@@ -33,6 +34,7 @@ public class ProductController {
      * @param ordersDTO 参数
      * @return Result<String> 响应结果
      */
+    @Log(detail = "商品下单")
     @PostMapping(value = "/buyProduct")
     @ResponseBody
     public Result<String> buyProduct(@RequestBody OrdersDTO ordersDTO) {
