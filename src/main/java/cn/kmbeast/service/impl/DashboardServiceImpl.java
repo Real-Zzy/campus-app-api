@@ -46,28 +46,28 @@ public class DashboardServiceImpl implements DashboardService {
         List<ChartVO> chartVOList = new ArrayList<>();
 
         int userCount = userMapper.queryCount(new UserQueryDto());
-        ChartVO chartVOUser = new ChartVO("用户数", userCount);
+        ChartVO chartVOUser = new ChartVO("User#", userCount);
         chartVOList.add(chartVOUser);
 
         int productCount = productMapper.queryCount(new ProductQueryDto());
-        ChartVO chartVOProduct = new ChartVO("收录商品", productCount);
+        ChartVO chartVOProduct = new ChartVO("Item#", productCount);
         chartVOList.add(chartVOProduct);
 
         int ordersCount = ordersMapper.queryCount(new OrdersQueryDto());
-        ChartVO chartVOOrders = new ChartVO("订单数", ordersCount);
+        ChartVO chartVOOrders = new ChartVO("Order#", ordersCount);
         chartVOList.add(chartVOOrders);
 
         int messageCount = messageMapper.queryCount(new MessageQueryDto());
-        ChartVO chartVOMessage = new ChartVO("消息通知", messageCount);
+        ChartVO chartVOMessage = new ChartVO("Message#", messageCount);
         chartVOList.add(chartVOMessage);
 
         int interactionCount = interactionMapper.queryCount(new InteractionQueryDto());
-        ChartVO chartVOInteraction = new ChartVO("互动数据", interactionCount);
+        ChartVO chartVOInteraction = new ChartVO("Interaction#", interactionCount);
         chartVOList.add(chartVOInteraction);
 
-        int evaluationsCount = evaluationsMapper.queryCount(new EvaluationsQueryDto());
-        ChartVO chartVOEvaluations = new ChartVO("商品评论", evaluationsCount);
-        chartVOList.add(chartVOEvaluations);
+//        int evaluationsCount = evaluationsMapper.queryCount(new EvaluationsQueryDto());
+//        ChartVO chartVOEvaluations = new ChartVO("商品评论", evaluationsCount);
+//        chartVOList.add(chartVOEvaluations);
 
         return ApiResult.success(chartVOList);
     }
